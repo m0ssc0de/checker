@@ -35,8 +35,7 @@ fn all_files(dir: &Path, depth: i32) -> Option<Vec<PathBuf>>{
 }
 
 fn range_filter(path_buf: Vec<PathBuf>, is_filename: bool) -> Vec<(i64, i64)> {
-    path_buf.iter().filter_map(|pf|{
-        println!("parsing {:?}", pf.display());
+    let mut v = path_buf.iter().filter_map(|pf|{
         if is_filename {
                 let file_name = String::from(pf.file_name().unwrap().to_str().unwrap());
                 let i = file_name.split("-").collect::<Vec<&str>>();
@@ -62,7 +61,9 @@ fn range_filter(path_buf: Vec<PathBuf>, is_filename: bool) -> Vec<(i64, i64)> {
             },
             None=>None
         }
-    }).collect::<Vec<_>>()
+    }).collect::<Vec<_>>();
+    v.sort_by(|p,c|p.0.cmp(&c.0));
+    v
 }
 
 fn cal_gap(ranges: Vec<(i64, i64)>) -> (i64, Vec<(i64, i64)>, i64) {
@@ -72,7 +73,6 @@ fn cal_gap(ranges: Vec<(i64, i64)>) -> (i64, Vec<(i64, i64)>, i64) {
     let mut previous = (-1, -1);
     for (i, current) in ranges.iter().enumerate() {
         if (current.0 == previous.0) && (current.1 == previous.1) {
-            println!("same pair {:?}", current);
             continue;
         }
         if i == 0 {
