@@ -45,12 +45,12 @@ fn range_filter(path_buf: Vec<PathBuf>, is_filename: bool) -> Vec<(i64, i64)> {
         }
         match pf.parent() {
             Some(p)=> {
-                let file_name = String::from(p.file_name().unwrap().to_str().unwrap());
+                let file_name = String::from(p.file_name()?.to_str().unwrap());
                 let i = file_name.split("-").collect::<Vec<&str>>();
                 if i.len() != 2 {
                     None
                 } else {
-                    Some((i[0].parse::<i64>().unwrap(),i[1].parse::<i64>().unwrap()))
+                    Some((i[0].parse::<i64>().ok()?,i[1].parse::<i64>().unwrap()))
                 }
             },
             None=>None
@@ -65,6 +65,9 @@ fn cal_gap(ranges: Vec<(i64, i64)>) -> (Vec<(i64, i64)>, i64, Vec<(i64, i64)>, i
     let mut exist_number = 0;
     let mut previous = (-1, -1);
     for (i, current) in ranges.iter().enumerate() {
+        if (current.0 == previous.0) && (current.1 == previous.1) {
+            continue;
+        }
         if i == 0 {
             previous = current.to_owned();
             continue;
