@@ -24,10 +24,10 @@ fn main() {
     let opt = Opt::from_args();
     println!("{:?}", opt);
 
-    let (a, b, c, d) = checker::gap_in_data(
+    let (b, c, d) = checker::gap_in_data(
         &opt.directory,
         opt.depth,
         opt.filename
     );
-    println!("{:#?}, {:#?}, {:#?}, {:#?}", a, b, c, d);
+    println!("exist_number:{:#?}, miss_ranges:{:#?}, miss_number:{:#?}", b, c, d);
 }
