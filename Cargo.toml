@@ -6,7 +6,13 @@ edition = "2021"
 
 [dependencies]
 structopt = "0.3"
+csv = "1.1"
+chrono = "0.4.23"
+serde_json = "1.0.89"
 
 [[bin]]
 name = "checker"
 path = "src/bin/checker.rs"
+[[bin]]
+name = "partition"
+path = "src/bin/partition.rs"
